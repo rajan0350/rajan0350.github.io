@@ -95,8 +95,10 @@
         </div>
     </div>
 
-    <!-- Adsterra का "Social Bar" कोड -->
-    <script type='text/javascript' src='//pl27534861.revenuecpmgate.com/60/91/0c/60910c72eabc83816995e68137084fbe.js'></script>
+    <!-- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ -->
+    <!-- Adsterra का नया और सही "Social Bar" कोड -->
+    <script type='text/javascript' src='//pl27538047.revenuecpmgate.com/56/f2/03/56f20351d2ea2b1fbdddbadc47a7bd13.js'></script>
+    <!-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ -->
 
     <script>
         // --- सभी ज़रूरी एलिमेंट्स ---
@@ -111,6 +113,7 @@
         let isAdLoading = false;
         const FORMSPREE_URL = "https://formspree.io/f/mbladbay";
 
+        // --- सिक्के सेव करने और लोड करने के लिए फ़ंक्शन ---
         function saveCoins() {
             localStorage.setItem('userAppCoins', coins);
         }
@@ -127,6 +130,7 @@
             modalCoinBalanceEl.textContent = coins;
         }
 
+        // --- विज्ञापन का लॉजिक ---
         watchAdBtn.addEventListener('click', () => {
             if (!navigator.onLine) {
                 alert("Please check your internet connection to watch ads.");
@@ -150,6 +154,7 @@
             }, 5000);
         });
         
+        // --- इंटरनेट कनेक्शन डिटेक्टर ---
         function handleConnectionChange() {
             if (navigator.onLine) {
                 offlineOverlay.style.display = 'none';
@@ -159,6 +164,7 @@
             }
         }
         
+        // --- निकासी का लॉजिक ---
         async function handleWithdrawal(method, contact, amount) {
             if (amount > coins) { alert("You don't have enough coins!"); return; }
             if (amount <= 0 || !amount) { alert("Please enter a valid amount."); return; }
@@ -181,6 +187,7 @@
             } catch (error) { alert("Could not connect. Please check your internet connection."); }
         }
 
+        // --- पॉप-अप दिखाने और छिपाने का लॉजिक ---
         const withdrawModal = document.getElementById('withdraw-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const modalViews = document.querySelectorAll('.modal-view');
@@ -197,13 +204,13 @@
         document.getElementById('esewa-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('eSewa', document.getElementById('esewa-number').value, parseInt(document.getElementById('esewa-amount').value)); });
         document.getElementById('paypal-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('PayPal', document.getElementById('paypal-email').value, parseInt(document.getElementById('paypal-amount').value)); });
         
+        // --- इनिशियलाइज़ेशन ---
         window.onload = function() {
             loadCoins();
             updateCoinDisplays();
             handleConnectionChange();
         };
 
-        // --- [ठीक किया गया] ---
         window.addEventListener('online', handleConnectionChange);
         window.addEventListener('offline', handleConnectionChange);
     </script>

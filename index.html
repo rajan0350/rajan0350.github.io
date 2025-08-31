@@ -3,103 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Simple Ad App</title>
+    <title>EarnMo Pro</title>
+
+    <!-- AdMob SDK (यह वेब के लिए है) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2197985926923605" crossorigin="anonymous"></script>
 
     <style>
         /* --- बेसिक स्टाइल --- */
         html, body { height: 100%; margin: 0; font-family: Arial, sans-serif; overflow: hidden; }
-        .app-container { width: 100%; height: 100%; background: linear-gradient(135deg, #007bff, #0056b3); display: flex; flex-direction: column; position: relative; }
+        .app-container { width: 100%; height: 100%; background: linear-gradient(135deg, #1d2b4b, #2c3e50); display: flex; flex-direction: column; position: relative; }
         .top-bar { width: 100%; padding: 20px; box-sizing: border-box; position: absolute; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
         #top-left-coins { background-color: rgba(0, 0, 0, 0.25); color: #ffd700; padding: 10px 15px; border-radius: 20px; font-size: 18px; font-weight: bold; }
         #withdraw-btn { width: 50px; height: 50px; background-color: #ffd700; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
         .main-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
-        #watch-ad-btn { padding: 20px 40px; font-size: 24px; font-weight: bold; color: white; background-color: #28a745; border: none; border-radius: 15px; box-shadow: 0 6px 0 #1b5e20; cursor: pointer; transition: all 0.1s ease-in-out; }
-        #watch-ad-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #1b5e20; }
+        #watch-ad-btn { padding: 20px 40px; font-size: 24px; font-weight: bold; color: white; background-color: #4CAF50; border: none; border-radius: 15px; box-shadow: 0 6px 0 #388E3C; cursor: pointer; transition: all 0.1s ease-in-out; }
+        #watch-ad-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #388E3C; }
         #watch-ad-btn:disabled { background-color: #6c757d; box-shadow: 0 6px 0 #495057; cursor: not-allowed; }
-
         .footer-nav { width: 100%; display: flex; justify-content: center; align-items: center; padding: 15px 0; }
         #telegram-footer-btn { width: 60px; height: 60px; background-color: #2AABEE; border-radius: 15px; display: flex; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.2s; }
         #telegram-footer-btn:hover { transform: scale(1.1); }
         .footer-icon { font-size: 36px; color: white; }
         
-        #offline-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); z-index: 9999;
-            justify-content: center; align-items: center; color: white; text-align: center;
-        }
-        .loader {
-            border: 5px solid #f3f3f3; border-top: 5px solid #3498db;
-            border-radius: 50%; width: 50px; height: 50px;
-            animation: spin 1s linear infinite; margin: 0 auto 20px auto;
-        }
+        #offline-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); z-index: 9999; justify-content: center; align-items: center; color: white; text-align: center; }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         #offline-message { font-size: 18px; font-weight: bold; }
-
+        
         .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; }
         .modal-content { background-color: #fefefe; padding: 25px; border-radius: 10px; text-align: center; width: 85%; max-width: 320px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .modal-view { display: none; } .modal-view.active { display: block; } .modal-content h2 { margin-top: 0; color: #333; }
+        .payment-btn .rate { font-size: 12px; opacity: 0.8; display: block; font-weight: normal; }
         .close-btn { position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .payment-btn { width: 100%; padding: 15px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
-        .esewa-btn { background-color: #60bb46; color: white; } .paypal-btn { background-color: #0070ba; color: white; }
+        .payment-btn { width: 100%; padding: 15px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .esewa-btn { background-color: #60bb46; color: white; } .paypal-btn { background-color: #0070ba; color: white; } .inr-btn { background-color: #ff9933; color: white; }
         .form-group { margin-bottom: 15px; text-align: left; } .form-group label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
         .submit-withdraw-btn { background-color: #dc3545; color: white; } .back-btn { background-color: #6c757d; color: white; margin-top: 20px; }
     </style>
 </head>
 <body>
-
     <div id="offline-overlay">
-        <div>
-            <div class="loader"></div>
-            <p id="offline-message">Connecting...</p>
-        </div>
+        <div><div class="loader"></div><p id="offline-message">Connecting...</p></div>
     </div>
-
     <div class="app-container">
         <div class="top-bar">
             <div id="top-left-coins">💰 <span id="main-coin-balance">0</span></div>
             <button id="withdraw-btn">🏦</button>
         </div>
         <div class="main-content">
-            <button id="watch-ad-btn">Watch Ads</button>
+            <button id="watch-ad-btn">Watch Video Ad</button>
         </div>
         <div class="footer-nav">
             <a href="https://t.me/earnmowatch" target="_blank" id="telegram-footer-btn"><span class="footer-icon">✈️</span></a>
         </div>
     </div>
-
     <div id="withdraw-modal" class="modal">
         <div class="modal-content">
             <span id="close-modal-btn" class="close-btn">&times;</span>
             <div id="payment-method-view" class="modal-view active">
-                <h2>Choose Method</h2>
+                <h2>Withdrawal Options</h2>
                 <p>Your Coins: <strong id="modal-coin-balance">0</strong></p>
-                <button id="choose-esewa-btn" class="payment-btn esewa-btn">eSewa</button>
-                <button id="choose-paypal-btn" class="payment-btn paypal-btn">PayPal</button>
+                <button id="choose-npr-btn" class="payment-btn esewa-btn">Withdraw 100 NPR<span class="rate">Requires 20,000 Coins</span></button>
+                <button id="choose-inr-btn" class="payment-btn inr-btn">Withdraw 80 INR<span class="rate">Requires 20,000 Coins</span></button>
+                <button id="choose-usd-btn" class="payment-btn paypal-btn">Withdraw $1 USD<span class="rate">Requires 25,000 Coins</span></button>
             </div>
-            <div id="esewa-form-view" class="modal-view">
-                <h2>eSewa Withdrawal</h2>
-                <form id="esewa-form"><div class="form-group"><label for="esewa-number">eSewa Number</label><input type="tel" id="esewa-number" placeholder="e.g., 98XXXXXXXX" required></div><div class="form-group"><label for="esewa-amount">Amount (Coins)</label><input type="number" id="esewa-amount" placeholder="e.g., 1000" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Withdraw</button></form>
-                <button class="payment-btn back-btn">Back</button>
+            <div id="npr-form-view" class="modal-view">
+                <h2>Withdraw 100 NPR</h2><p>Requires 20,000 Coins</p><form id="npr-form"><div class="form-group"><label for="esewa-id">eSewa ID / Phone</label><input type="tel" id="esewa-id" placeholder="Your eSewa Number" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
             </div>
-            <div id="paypal-form-view" class="modal-view">
-                <h2>PayPal Withdrawal</h2>
-                <form id="paypal-form"><div class="form-group"><label for="paypal-email">PayPal Email</label><input type="email" id="paypal-email" placeholder="e.g., user@example.com" required></div><div class="form-group"><label for="paypal-amount">Amount (Coins)</label><input type="number" id="paypal-amount" placeholder="e.g., 1000" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Withdraw</button></form>
-                <button class="payment-btn back-btn">Back</button>
+            <div id="inr-form-view" class="modal-view">
+                <h2>Withdraw 80 INR</h2><p>Requires 20,000 Coins</p><form id="inr-form"><div class="form-group"><label for="upi-id">UPI ID</label><input type="text" id="upi-id" placeholder="Your UPI ID" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
+            </div>
+            <div id="usd-form-view" class="modal-view">
+                <h2>Withdraw $1 USD</h2><p>Requires 25,000 Coins</p><form id="usd-form"><div class="form-group"><label for="paypal-email">PayPal Email</label><input type="email" id="paypal-email" placeholder="Your PayPal Email" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
             </div>
             <div id="success-view" class="modal-view">
-                <h2>Success!</h2>
-                <p>Your withdrawal request has been sent. It will be processed soon.</p>
-                <button class="payment-btn back-btn">OK</button>
+                <h2>Success!</h2><p>Your withdrawal request has been sent.</p><button class="payment-btn back-btn">OK</button>
             </div>
         </div>
     </div>
-
-    <!-- ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ -->
-    <!-- Adsterra का नया और सही "Social Bar" कोड -->
-    <script type='text/javascript' src='//pl27538047.revenuecpmgate.com/56/f2/03/56f20351d2ea2b1fbdddbadc47a7bd13.js'></script>
-    <!-- ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ -->
-
     <script>
         // --- सभी ज़रूरी एलिमेंट्स ---
         const mainCoinBalanceEl = document.getElementById('main-coin-balance');
@@ -108,110 +89,100 @@
         const offlineOverlay = document.getElementById('offline-overlay');
         const offlineMessage = document.getElementById('offline-message');
         const withdrawBtn = document.getElementById('withdraw-btn');
-
         let coins = 0;
         let isAdLoading = false;
-        const FORMSPREE_URL = "https://formspree.io/f/mbladbay";
+        const FORMSPREE_URL = "https://formspree.io/f/mvgbknzz"; // <-- अपनी नई Formspree ID यहाँ डालें
+        let rewardedAd = null;
+        
+        function saveCoins() { localStorage.setItem('userAppCoinsPro', coins); }
+        function loadCoins() { const savedCoins = localStorage.getItem('userAppCoinsPro'); if (savedCoins !== null) { coins = parseInt(savedCoins, 10); } }
+        function updateCoinDisplays() { mainCoinBalanceEl.textContent = coins; modalCoinBalanceEl.textContent = coins; }
 
-        // --- सिक्के सेव करने और लोड करने के लिए फ़ंक्शन ---
-        function saveCoins() {
-            localStorage.setItem('userAppCoins', coins);
-        }
-
-        function loadCoins() {
-            const savedCoins = localStorage.getItem('userAppCoins');
-            if (savedCoins !== null) {
-                coins = parseInt(savedCoins, 10);
-            }
-        }
-
-        function updateCoinDisplays() {
-            mainCoinBalanceEl.textContent = coins;
-            modalCoinBalanceEl.textContent = coins;
-        }
-
-        // --- विज्ञापन का लॉजिक ---
-        watchAdBtn.addEventListener('click', () => {
-            if (!navigator.onLine) {
-                alert("Please check your internet connection to watch ads.");
-                return;
-            }
-            if (isAdLoading) { return; }
-            
+        // --- AdMob Rewarded Ad का असली लॉजिक ---
+        function loadRewardedAd() {
+            if (isAdLoading) return;
             isAdLoading = true;
             watchAdBtn.disabled = true;
-            watchAdBtn.textContent = 'Loading Ad...';
+            watchAdBtn.textContent = 'Loading Video...';
 
-            setTimeout(() => {
-                coins += 45;
-                updateCoinDisplays();
-                saveCoins();
-                alert("You earned 45 coins!");
-                
+            // Google AdMob Rewarded Ad API
+            admob.rewarded.load({
+                // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+                // महत्वपूर्ण: अपनी असली Ad unit ID यहाँ पेस्ट करें
+                adUnitId: 'ca-app-pub-2197985926923605/4444446695', 
+                // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+            }).then(ad => {
+                rewardedAd = ad;
                 isAdLoading = false;
                 watchAdBtn.disabled = false;
-                watchAdBtn.textContent = 'Watch Ads';
-            }, 5000);
-        });
-        
-        // --- इंटरनेट कनेक्शन डिटेक्टर ---
-        function handleConnectionChange() {
-            if (navigator.onLine) {
-                offlineOverlay.style.display = 'none';
-            } else {
-                offlineMessage.textContent = 'No Internet Connection';
-                offlineOverlay.style.display = 'flex';
-            }
+                watchAdBtn.textContent = 'Watch Video Ad';
+            }).catch(err => {
+                console.error('Ad failed to load', err);
+                isAdLoading = false;
+                watchAdBtn.disabled = false;
+                watchAdBtn.textContent = 'Try Again';
+            });
         }
-        
-        // --- निकासी का लॉजिक ---
-        async function handleWithdrawal(method, contact, amount) {
-            if (amount > coins) { alert("You don't have enough coins!"); return; }
-            if (amount <= 0 || !amount) { alert("Please enter a valid amount."); return; }
+
+        watchAdBtn.addEventListener('click', () => {
+            if (!navigator.onLine) { alert("Please check your internet connection."); return; }
             
+            if (rewardedAd) {
+                rewardedAd.show().then(reward => {
+                    console.log('Reward earned!', reward);
+                    coins += 50; // प्रति विज्ञापन 50 सिक्के
+                    updateCoinDisplays();
+                    saveCoins();
+                    alert("Congratulations! You earned 50 coins!");
+                    
+                    rewardedAd = null; 
+                    loadRewardedAd(); 
+                });
+            } else {
+                alert("Ad is not ready yet. Please wait or try again.");
+                if (!isAdLoading) { loadRewardedAd(); }
+            }
+        });
+
+        function handleConnectionChange() { if (navigator.onLine) { offlineOverlay.style.display = 'none'; } else { offlineMessage.textContent = 'No Internet Connection'; offlineOverlay.style.display = 'flex'; } }
+        
+        async function handleWithdrawal(method, contact, amount, coinCost) {
+            if (coins < coinCost) { alert("You don't have enough coins!"); return; }
             const formData = new FormData();
             formData.append('Withdrawal Method', method);
             formData.append('Contact Info', contact);
             formData.append('Amount', amount);
-
             try {
                 const response = await fetch(FORMSPREE_URL, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
                 if (response.ok) {
-                    coins -= amount;
+                    coins -= coinCost;
                     updateCoinDisplays();
                     saveCoins();
-                    document.getElementById('esewa-form').reset();
-                    document.getElementById('paypal-form').reset();
                     showModalView(document.getElementById('success-view'));
                 } else { alert("There was a problem with your request."); }
-            } catch (error) { alert("Could not connect. Please check your internet connection."); }
+            } catch (error) { alert("Could not connect."); }
         }
-
-        // --- पॉप-अप दिखाने और छिपाने का लॉजिक ---
         const withdrawModal = document.getElementById('withdraw-modal');
         const closeModalBtn = document.getElementById('close-modal-btn');
         const modalViews = document.querySelectorAll('.modal-view');
         function showModalView(viewToShow) { modalViews.forEach(view => view.classList.remove('active')); viewToShow.classList.add('active'); }
-        withdrawBtn.addEventListener('click', () => { 
-            updateCoinDisplays();
-            showModalView(document.getElementById('payment-method-view')); 
-            withdrawModal.style.display = 'flex'; 
-        });
+        withdrawBtn.addEventListener('click', () => { updateCoinDisplays(); showModalView(document.getElementById('payment-method-view')); withdrawModal.style.display = 'flex'; });
         closeModalBtn.addEventListener('click', () => { withdrawModal.style.display = 'none'; });
-        document.getElementById('choose-esewa-btn').addEventListener('click', () => showModalView(document.getElementById('esewa-form-view')));
-        document.getElementById('choose-paypal-btn').addEventListener('click', () => showModalView(document.getElementById('paypal-form-view')));
         document.querySelectorAll('.back-btn').forEach(btn => { btn.addEventListener('click', () => { updateCoinDisplays(); showModalView(document.getElementById('payment-method-view')); }); });
-        document.getElementById('esewa-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('eSewa', document.getElementById('esewa-number').value, parseInt(document.getElementById('esewa-amount').value)); });
-        document.getElementById('paypal-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('PayPal', document.getElementById('paypal-email').value, parseInt(document.getElementById('paypal-amount').value)); });
+        document.getElementById('choose-npr-btn').addEventListener('click', () => showModalView(document.getElementById('npr-form-view')));
+        document.getElementById('choose-inr-btn').addEventListener('click', () => showModalView(document.getElementById('inr-form-view')));
+        document.getElementById('choose-usd-btn').addEventListener('click', () => showModalView(document.getElementById('usd-form-view')));
+        document.getElementById('npr-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('eSewa', document.getElementById('esewa-id').value, '100 NPR', 20000); });
+        document.getElementById('inr-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('UPI', document.getElementById('upi-id').value, '80 INR', 20000); });
+        document.getElementById('usd-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('PayPal', document.getElementById('paypal-email').value, '$1 USD', 25000); });
         
-        // --- इनिशियलाइज़ेशन ---
         window.onload = function() {
             loadCoins();
             updateCoinDisplays();
             handleConnectionChange();
+            if (navigator.onLine) { loadRewardedAd(); }
         };
-
-        window.addEventListener('online', handleConnectionChange);
+        window.addEventListener('online', () => { handleConnectionChange(); if(!rewardedAd && !isAdLoading) loadRewardedAd(); });
         window.addEventListener('offline', handleConnectionChange);
     </script>
 </body>

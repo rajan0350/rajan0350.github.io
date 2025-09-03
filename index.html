@@ -1,189 +1,335 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>EarnMo Pro</title>
-
-    <!-- AdMob SDK (यह वेब के लिए है) -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2197985926923605" crossorigin="anonymous"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaun Banega Crorepati</title>
+    
     <style>
-        /* --- बेसिक स्टाइल --- */
-        html, body { height: 100%; margin: 0; font-family: Arial, sans-serif; overflow: hidden; }
-        .app-container { width: 100%; height: 100%; background: linear-gradient(135deg, #1d2b4b, #2c3e50); display: flex; flex-direction: column; position: relative; }
-        .top-bar { width: 100%; padding: 20px; box-sizing: border-box; position: absolute; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        #top-left-coins { background-color: rgba(0, 0, 0, 0.25); color: #ffd700; padding: 10px 15px; border-radius: 20px; font-size: 18px; font-weight: bold; }
-        #withdraw-btn { width: 50px; height: 50px; background-color: #ffd700; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .main-content { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
-        #watch-ad-btn { padding: 20px 40px; font-size: 24px; font-weight: bold; color: white; background-color: #4CAF50; border: none; border-radius: 15px; box-shadow: 0 6px 0 #388E3C; cursor: pointer; transition: all 0.1s ease-in-out; }
-        #watch-ad-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #388E3C; }
-        #watch-ad-btn:disabled { background-color: #6c757d; box-shadow: 0 6px 0 #495057; cursor: not-allowed; }
-        .footer-nav { width: 100%; display: flex; justify-content: center; align-items: center; padding: 15px 0; }
-        #telegram-footer-btn { width: 60px; height: 60px; background-color: #2AABEE; border-radius: 15px; display: flex; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: transform 0.2s; }
-        #telegram-footer-btn:hover { transform: scale(1.1); }
-        .footer-icon { font-size: 36px; color: white; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --primary-bg: #020024;
+            --container-bg: linear-gradient(135deg, #0d004d, #04001a);
+            --gold-color: #ffd700;
+            --button-bg: linear-gradient(145deg, #0d004d, #1a007d);
+            --correct-color: #28a745; /* Green */
+            --wrong-color: #dc3545; /* Red */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            background: var(--container-bg);
+            box-sizing: border-box;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        #start-screen {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; height: 100%;
+        }
+
+        #start-screen h1 {
+            font-size: 2.5em; color: var(--gold-color); text-shadow: 2px 2px 5px #000;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 15px 30px; font-size: 1.5em; font-weight: bold;
+            color: var(--primary-bg); background-color: var(--gold-color);
+            border: none; border-radius: 10px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        #game-container {
+            width: 100%; height: 100%; display: none; flex-direction: row;
+        }
+
+        .main-game {
+            flex: 3; padding-right: 20px; display: flex; flex-direction: column;
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        #timer-display {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 4px solid var(--gold-color);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.8em; font-weight: bold;
+            background-color: rgba(0, 0, 64, 0.5);
+            transition: background-color 0.5s, color 0.5s;
+        }
+        #timer-display.low-time {
+            background-color: var(--wrong-color);
+            border-color: var(--wrong-color);
+        }
+
+        .question-container {
+            background-color: rgba(0, 0, 64, 0.5); padding: 20px;
+            border-radius: 10px; margin-bottom: 20px; font-size: 1.3em;
+            text-align: center; flex-grow: 1; display: flex;
+            align-items: center; justify-content: center; min-height: 120px;
+        }
+
+        .options-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+        }
+
+        .option {
+            background: var(--button-bg); border: 2px solid var(--gold-color);
+            color: white; padding: 15px; border-radius: 8px; cursor: pointer;
+            font-size: 1.1em; text-align: left; transition: all 0.2s ease;
+        }
         
-        #offline-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); z-index: 9999; justify-content: center; align-items: center; color: white; text-align: center; }
-        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #offline-message { font-size: 18px; font-weight: bold; }
+        .option.correct { background: var(--correct-color); border-color: var(--correct-color); }
+        .option.wrong { background: var(--wrong-color); border-color: var(--wrong-color); }
+        .option:disabled { cursor: not-allowed; opacity: 0.7; }
+
+        .lifelines { margin-bottom: 15px; }
+        .lifelines button {
+            background-color: var(--gold-color); color: #000020;
+            border: none; padding: 10px 20px; border-radius: 5px;
+            cursor: pointer; margin-right: 10px; font-size: 16px; font-weight: bold;
+        }
+        .lifelines button.used { background-color: #888; cursor: not-allowed; }
+
+        .money-tree {
+            flex: 1; background-color: rgba(0, 0, 64, 0.5);
+            padding: 20px; border-radius: 10px; overflow-y: auto;
+        }
+        .money-tree h2 { text-align: center; margin-top: 0; color: var(--gold-color); }
+        #money-list {
+            list-style: none; padding: 0; margin: 0; text-align: center;
+            display: flex; flex-direction: column-reverse;
+        }
+        #money-list li {
+            padding: 5px 10px; border-radius: 5px; margin-bottom: 4px;
+            font-size: 0.9em; color: #f0f0f0;
+        }
+        #money-list li.current {
+            background-color: var(--gold-color); color: #000020; font-weight: bold;
+        }
         
-        .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; }
-        .modal-content { background-color: #fefefe; padding: 25px; border-radius: 10px; text-align: center; width: 85%; max-width: 320px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .modal-view { display: none; } .modal-view.active { display: block; } .modal-content h2 { margin-top: 0; color: #333; }
-        .payment-btn .rate { font-size: 12px; opacity: 0.8; display: block; font-weight: normal; }
-        .close-btn { position: absolute; top: 10px; right: 15px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-        .payment-btn { width: 100%; padding: 15px; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        .esewa-btn { background-color: #60bb46; color: white; } .paypal-btn { background-color: #0070ba; color: white; } .inr-btn { background-color: #ff9933; color: white; }
-        .form-group { margin-bottom: 15px; text-align: left; } .form-group label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
-        .submit-withdraw-btn { background-color: #dc3545; color: white; } .back-btn { background-color: #6c757d; color: white; margin-top: 20px; }
+        #ad-container {
+            width: 100%; height: auto; min-height: 50px;
+            background-color: #000; display: flex; justify-content: center;
+            align-items: center; z-index: 1000; flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            body { overflow: auto; }
+            .container { height: auto; }
+            #game-container { flex-direction: column; }
+            .main-game { padding-right: 0; margin-bottom: 20px; }
+            .question-container { font-size: 1.1em; min-height: 100px; }
+            .option { font-size: 1em; padding: 12px; }
+        }
     </style>
 </head>
 <body>
-    <div id="offline-overlay">
-        <div><div class="loader"></div><p id="offline-message">Connecting...</p></div>
-    </div>
-    <div class="app-container">
-        <div class="top-bar">
-            <div id="top-left-coins">💰 <span id="main-coin-balance">0</span></div>
-            <button id="withdraw-btn">🏦</button>
+
+    <div class="container">
+        <div id="start-screen">
+            <h1>Kaun Banega Crorepati</h1>
+            <button id="start-btn" class="btn">Game Shuru Karein</button>
         </div>
-        <div class="main-content">
-            <button id="watch-ad-btn">Watch Video Ad</button>
-        </div>
-        <div class="footer-nav">
-            <a href="https://t.me/earnmowatch" target="_blank" id="telegram-footer-btn"><span class="footer-icon">✈️</span></a>
-        </div>
-    </div>
-    <div id="withdraw-modal" class="modal">
-        <div class="modal-content">
-            <span id="close-modal-btn" class="close-btn">&times;</span>
-            <div id="payment-method-view" class="modal-view active">
-                <h2>Withdrawal Options</h2>
-                <p>Your Coins: <strong id="modal-coin-balance">0</strong></p>
-                <button id="choose-npr-btn" class="payment-btn esewa-btn">Withdraw 100 NPR<span class="rate">Requires 20,000 Coins</span></button>
-                <button id="choose-inr-btn" class="payment-btn inr-btn">Withdraw 80 INR<span class="rate">Requires 20,000 Coins</span></button>
-                <button id="choose-usd-btn" class="payment-btn paypal-btn">Withdraw $1 USD<span class="rate">Requires 25,000 Coins</span></button>
+
+        <div id="game-container">
+            <div class="main-game">
+                <div class="top-section">
+                    <div class="lifelines"><button id="lifeline-50-50" onclick="useLifeline('50-50')">50-50</button></div>
+                    <div class="timer-container"><div id="timer-display">20</div></div>
+                    <div class="question-container"><p id="question"></p></div>
+                </div>
+                <div class="options-container">
+                    <button class="option" onclick="checkAnswer(this)"></button>
+                    <button class="option" onclick="checkAnswer(this)"></button>
+                    <button class="option" onclick="checkAnswer(this)"></button>
+                    <button class="option" onclick="checkAnswer(this)"></button>
+                </div>
             </div>
-            <div id="npr-form-view" class="modal-view">
-                <h2>Withdraw 100 NPR</h2><p>Requires 20,000 Coins</p><form id="npr-form"><div class="form-group"><label for="esewa-id">eSewa ID / Phone</label><input type="tel" id="esewa-id" placeholder="Your eSewa Number" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
-            </div>
-            <div id="inr-form-view" class="modal-view">
-                <h2>Withdraw 80 INR</h2><p>Requires 20,000 Coins</p><form id="inr-form"><div class="form-group"><label for="upi-id">UPI ID</label><input type="text" id="upi-id" placeholder="Your UPI ID" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
-            </div>
-            <div id="usd-form-view" class="modal-view">
-                <h2>Withdraw $1 USD</h2><p>Requires 25,000 Coins</p><form id="usd-form"><div class="form-group"><label for="paypal-email">PayPal Email</label><input type="email" id="paypal-email" placeholder="Your PayPal Email" required></div><button type="submit" class="payment-btn submit-withdraw-btn">Request</button></form><button class="payment-btn back-btn">Back</button>
-            </div>
-            <div id="success-view" class="modal-view">
-                <h2>Success!</h2><p>Your withdrawal request has been sent.</p><button class="payment-btn back-btn">OK</button>
+            <div class="money-tree">
+                <h2>Dhanrashi</h2>
+                <ul id="money-list">
+                    <li>₹ 1,000</li><li>₹ 2,000</li><li>₹ 3,000</li><li>₹ 5,000</li><li>₹ 10,000</li>
+                    <li>₹ 20,000</li><li>₹ 40,000</li><li>₹ 80,000</li><li>₹ 1,60,000</li><li>₹ 3,20,000</li>
+                    <li>₹ 6,40,000</li><li>₹ 12,50,000</li><li>₹ 25,00,000</li><li>₹ 50,00,000</li><li>₹ 1 Cr</li>
+                    <li>₹ 2 Cr</li><li>₹ 3 Cr</li><li>₹ 4 Cr</li><li>₹ 5 Cr</li><li>₹ 6 Cr</li>
+                    <li>₹ 7 Cr</li><li>₹ 8 Cr</li><li>₹ 9 Cr</li><li>₹ 10 Cr</li><li>₹ 25 Cr</li>
+                </ul>
             </div>
         </div>
     </div>
+
+    <div id="ad-container">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'b985d960a73e3d71d76c951fac8a5c7e',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/b985d960a73e3d71d76c951fac8a5c7e/invoke.js"></script>
+    </div>
+
     <script>
-        // --- सभी ज़रूरी एलिमेंट्स ---
-        const mainCoinBalanceEl = document.getElementById('main-coin-balance');
-        const modalCoinBalanceEl = document.getElementById('modal-coin-balance');
-        const watchAdBtn = document.getElementById('watch-ad-btn');
-        const offlineOverlay = document.getElementById('offline-overlay');
-        const offlineMessage = document.getElementById('offline-message');
-        const withdrawBtn = document.getElementById('withdraw-btn');
-        let coins = 0;
-        let isAdLoading = false;
-        const FORMSPREE_URL = "https://formspree.io/f/mvgbknzz"; // <-- अपनी नई Formspree ID यहाँ डालें
-        let rewardedAd = null;
+        const startScreen = document.getElementById('start-screen');
+        const gameContainer = document.getElementById('game-container');
+        const startBtn = document.getElementById('start-btn');
+        const questionElement = document.getElementById('question');
+        const optionButtons = document.querySelectorAll('.option');
+        const moneyListItems = document.querySelectorAll('#money-list li');
+        const lifeline5050Button = document.getElementById('lifeline-50-50');
+        const timerDisplay = document.getElementById('timer-display');
         
-        function saveCoins() { localStorage.setItem('userAppCoinsPro', coins); }
-        function loadCoins() { const savedCoins = localStorage.getItem('userAppCoinsPro'); if (savedCoins !== null) { coins = parseInt(savedCoins, 10); } }
-        function updateCoinDisplays() { mainCoinBalanceEl.textContent = coins; modalCoinBalanceEl.textContent = coins; }
+        // Sawaalon ki sankhya ab dhanrashi list se li jayegi
+        const QUESTIONS_PER_GAME = moneyListItems.length;
+        let timerInterval = null;
 
-        // --- AdMob Rewarded Ad का असली लॉजिक ---
-        function loadRewardedAd() {
-            if (isAdLoading) return;
-            isAdLoading = true;
-            watchAdBtn.disabled = true;
-            watchAdBtn.textContent = 'Loading Video...';
+        const fullQuestionBank = [
+            { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" },
+            { question: "Suraj ke sabse nazdeek kaun sa grah (planet) hai?", options: ["Shukra (Venus)", "Budh (Mercury)", "Mangal (Mars)", "Prithvi (Earth)"], answer: "Budh (Mercury)" },
+            { question: "'Gulabi Sheher' ya 'Pink City' kise kaha jaata hai?", options: ["Jodhpur", "Udaipur", "Jaipur", "Bhopal"], answer: "Jaipur" },
+            { question: "Aisi kaun si cheez hai jo paani peete hi mar jaati hai?", options: ["Aag", "Pyaas", "Garmi", "Patthar"], answer: "Pyaas" },
+            { question: "Woh kya hai jo aapke paas jitna zyada hoga, utna hi kam aapko dikhega?", options: ["Paisa", "Roshni", "Andhera", "Gyaan"], answer: "Andhera" },
+            { question: "Famous dish 'Litti Chokha' mukhya roop se kis Bharatiya rajya se hai?", options: ["Uttar Pradesh", "Bihar", "Rajasthan", "Punjab"], answer: "Bihar" },
+            { question: "Ramayan mein, Sita haran ke liye sone ka hiran (golden deer) ka roop kisne liya tha?", options: ["Ravana", "Surpanakha", "Maricha", "Vibhishana"], answer: "Maricha" },
+            { question: "Mahabharat ki ladai Kurukshetra mein kitne dino tak chali thi?", options: ["10 din", "18 din", "25 din", "15 din"], answer: "18 din" },
+            { question: "Inmein se kaun sa rang, Bharat ke jhande (tricolour) mein nahi hota?", options: ["Kesariya", "Safed", "Hara", "Neela"], answer: "Neela" },
+            { question: "Telephone ka avishkar kisne kiya tha?", options: ["Thomas Edison", "Graham Bell", "Einstein", "Newton"], answer: "Graham Bell" },
+            { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" },
+            { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" },
+            { question: "Computer ka janak (father of computer) kise kaha jaata hai?", options: ["Bill Gates", "Charles Babbage", "Steve Jobs", "Tim Berners-Lee"], answer: "Charles Babbage" },
+            { question: "Agar aap ek race mein daud rahe hain aur aapne 2nd position wale ko peeche chhod diya, toh ab aapki position kya hai?", options: ["1st", "3rd", "2nd", "4th"], answer: "2nd" },
+            { question: "'Sarson ka Saag' aur 'Makki di Roti' kis rajya ka paramparik bhojan hai?", options: ["Haryana", "Gujarat", "Punjab", "Himachal Pradesh"], answer: "Punjab" },
+            { question: "Onam ka tyohar, khas taur par, kis Bharatiya rajya mein manaya jaata hai?", options: ["Karnataka", "Tamil Nadu", "Kerala", "Andhra Pradesh"], answer: "Kerala" },
+            { question: "Chhath Puja mein kis devta ki puja ki jaati hai?", options: ["Shiv ji", "Vishnu ji", "Surya Dev", "Indra Dev"], answer: "Surya Dev" },
+            { question: "Panchtantra ki kahaniyan mool roop se kisne likhi thi?", options: ["Tulsidas", "Kalidas", "Vishnu Sharma", "Valmiki"], answer: "Vishnu Sharma" },
+            { question: "Chandrama par kadam rakhne wala pehla insaan kaun tha?", options: ["Yuri Gagarin", "Rakesh Sharma", "Neil Armstrong", "Buzz Aldrin"], answer: "Neil Armstrong" },
+            { question: "Insaan ke shareer mein kitni haddiyan (bones) hoti hain?", options: ["206", "210", "190", "300"], answer: "206" },
+            { question: "Indradhanush (Rainbow) mein kitne rang hote hain?", options: ["5", "8", "7", "9"], answer: "7" },
+            { question: "Sabse chhota mahadweep (continent) kaun sa hai?", options: ["Asia", "Africa", "Australia", "Europe"], answer: "Australia" },
+            { question: "Olympic games kitne saal ke antral par hote hain?", options: ["2 saal", "4 saal", "5 saal", "6 saal"], answer: "4 saal" },
+            { question: "Leonardo da Vinci ki banayi hui sabse prasidh painting kaun si hai?", options: ["Starry Night", "The Scream", "Mona Lisa", "The Last Supper"], answer: "Mona Lisa" },
+            { question: "Bharat ka 'missile man' kise kaha jaata hai?", options: ["C.V. Raman", "Vikram Sarabhai", "A.P.J. Abdul Kalam", "Homi Bhabha"], answer: "A.P.J. Abdul Kalam" },
+        ];
 
-            // Google AdMob Rewarded Ad API
-            admob.rewarded.load({
-                // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
-                // महत्वपूर्ण: अपनी असली Ad unit ID यहाँ पेस्ट करें
-                adUnitId: 'ca-app-pub-2197985926923605/4444446695', 
-                // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-            }).then(ad => {
-                rewardedAd = ad;
-                isAdLoading = false;
-                watchAdBtn.disabled = false;
-                watchAdBtn.textContent = 'Watch Video Ad';
-            }).catch(err => {
-                console.error('Ad failed to load', err);
-                isAdLoading = false;
-                watchAdBtn.disabled = false;
-                watchAdBtn.textContent = 'Try Again';
+        let gameQuestions = [], currentQuestionIndex = 0, lifeline5050Used = false;
+        startBtn.addEventListener('click', startGame);
+
+        function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+
+        function startGame() {
+            startScreen.style.display = 'none'; gameContainer.style.display = 'flex';
+            shuffleArray(fullQuestionBank);
+            gameQuestions = fullQuestionBank.slice(0, QUESTIONS_PER_GAME);
+            currentQuestionIndex = 0; lifeline5050Used = false; lifeline5050Button.classList.remove('used'); lifeline5050Button.disabled = false;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            clearInterval(timerInterval);
+            optionButtons.forEach(button => {
+                button.disabled = false; button.style.display = 'block';
+                button.classList.remove('correct', 'wrong');
             });
-        }
-
-        watchAdBtn.addEventListener('click', () => {
-            if (!navigator.onLine) { alert("Please check your internet connection."); return; }
-            
-            if (rewardedAd) {
-                rewardedAd.show().then(reward => {
-                    console.log('Reward earned!', reward);
-                    coins += 50; // प्रति विज्ञापन 50 सिक्के
-                    updateCoinDisplays();
-                    saveCoins();
-                    alert("Congratulations! You earned 50 coins!");
-                    
-                    rewardedAd = null; 
-                    loadRewardedAd(); 
-                });
+            if (currentQuestionIndex < gameQuestions.length) {
+                const currentQuestion = gameQuestions[currentQuestionIndex];
+                questionElement.textContent = currentQuestion.question;
+                optionButtons.forEach((button, index) => { button.textContent = `${String.fromCharCode(65 + index)}: ${currentQuestion.options[index]}`; });
+                updateMoneyTree();
+                startTimer();
             } else {
-                alert("Ad is not ready yet. Please wait or try again.");
-                if (!isAdLoading) { loadRewardedAd(); }
+                questionElement.textContent = "Badhai ho! Aap Crorepati ban gaye!";
+                document.querySelector('.options-container').style.display = 'none';
+                clearInterval(timerInterval);
+                setTimeout(() => { location.reload(); }, 5000);
             }
-        });
-
-        function handleConnectionChange() { if (navigator.onLine) { offlineOverlay.style.display = 'none'; } else { offlineMessage.textContent = 'No Internet Connection'; offlineOverlay.style.display = 'flex'; } }
-        
-        async function handleWithdrawal(method, contact, amount, coinCost) {
-            if (coins < coinCost) { alert("You don't have enough coins!"); return; }
-            const formData = new FormData();
-            formData.append('Withdrawal Method', method);
-            formData.append('Contact Info', contact);
-            formData.append('Amount', amount);
-            try {
-                const response = await fetch(FORMSPREE_URL, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-                if (response.ok) {
-                    coins -= coinCost;
-                    updateCoinDisplays();
-                    saveCoins();
-                    showModalView(document.getElementById('success-view'));
-                } else { alert("There was a problem with your request."); }
-            } catch (error) { alert("Could not connect."); }
         }
-        const withdrawModal = document.getElementById('withdraw-modal');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const modalViews = document.querySelectorAll('.modal-view');
-        function showModalView(viewToShow) { modalViews.forEach(view => view.classList.remove('active')); viewToShow.classList.add('active'); }
-        withdrawBtn.addEventListener('click', () => { updateCoinDisplays(); showModalView(document.getElementById('payment-method-view')); withdrawModal.style.display = 'flex'; });
-        closeModalBtn.addEventListener('click', () => { withdrawModal.style.display = 'none'; });
-        document.querySelectorAll('.back-btn').forEach(btn => { btn.addEventListener('click', () => { updateCoinDisplays(); showModalView(document.getElementById('payment-method-view')); }); });
-        document.getElementById('choose-npr-btn').addEventListener('click', () => showModalView(document.getElementById('npr-form-view')));
-        document.getElementById('choose-inr-btn').addEventListener('click', () => showModalView(document.getElementById('inr-form-view')));
-        document.getElementById('choose-usd-btn').addEventListener('click', () => showModalView(document.getElementById('usd-form-view')));
-        document.getElementById('npr-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('eSewa', document.getElementById('esewa-id').value, '100 NPR', 20000); });
-        document.getElementById('inr-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('UPI', document.getElementById('upi-id').value, '80 INR', 20000); });
-        document.getElementById('usd-form').addEventListener('submit', (e) => { e.preventDefault(); handleWithdrawal('PayPal', document.getElementById('paypal-email').value, '$1 USD', 25000); });
-        
-        window.onload = function() {
-            loadCoins();
-            updateCoinDisplays();
-            handleConnectionChange();
-            if (navigator.onLine) { loadRewardedAd(); }
-        };
-        window.addEventListener('online', () => { handleConnectionChange(); if(!rewardedAd && !isAdLoading) loadRewardedAd(); });
-        window.addEventListener('offline', handleConnectionChange);
+
+        function startTimer() {
+            let timeLeft = 20;
+            timerDisplay.textContent = timeLeft;
+            timerDisplay.classList.remove('low-time');
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 5) {
+                    timerDisplay.classList.add('low-time');
+                }
+                if (timeLeft < 0) {
+                    clearInterval(timerInterval);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function timeUp() {
+            optionButtons.forEach(button => button.disabled = true);
+            alert("Samay samapt! Game yahin khatm hota hai.");
+            location.reload();
+        }
+
+        function updateMoneyTree() { moneyListItems.forEach((item, index) => { item.classList.remove('current'); if (index === currentQuestionIndex) { item.classList.add('current'); } }); }
+
+        function checkAnswer(selectedButton) {
+            clearInterval(timerInterval);
+            optionButtons.forEach(button => button.disabled = true);
+            const selectedOptionText = selectedButton.textContent.substring(3);
+            const correctAnswer = gameQuestions[currentQuestionIndex].answer;
+
+            if (selectedOptionText === correctAnswer) {
+                selectedButton.classList.add('correct');
+                setTimeout(() => { currentQuestionIndex++; showQuestion(); }, 2000);
+            } else {
+                selectedButton.classList.add('wrong');
+                optionButtons.forEach(button => {
+                    if (button.textContent.substring(3) === correctAnswer) {
+                        button.classList.add('correct');
+                    }
+                });
+                setTimeout(() => {
+                    alert("Afsos! Yeh galat jawab hai. Game yahin khatm hota hai.");
+                    location.reload();
+                }, 3000);
+            }
+        }
+
+        function useLifeline(type) {
+            if (type === '50-50' && !lifeline5050Used) {
+                const currentQuestion = gameQuestions[currentQuestionIndex];
+                const correctAnswer = currentQuestion.answer;
+                const incorrectOptions = currentQuestion.options.filter(opt => opt !== correctAnswer);
+                shuffleArray(incorrectOptions);
+                const optionsToHide = incorrectOptions.slice(0, 2);
+                optionButtons.forEach(button => {
+                    if (optionsToHide.includes(button.textContent.substring(3))) {
+                        button.style.display = 'none';
+                    }
+                });
+                lifeline5050Used = true; lifeline5050Button.classList.add('used'); lifeline5050Button.disabled = true;
+            }
+        }
     </script>
 </body>
 </html>

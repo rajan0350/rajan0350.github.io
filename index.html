@@ -6,22 +6,11 @@
     <title>Kaun Banega Crorepati</title>
     
     <style>
-        /* CSS में कोई बदलाव नहीं है, यह पहले जैसा ही है */
+        /* CSS में कोई बदलाव नहीं है */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-        :root {
-            --primary-bg: #020024; --container-bg: linear-gradient(135deg, #0d004d, #04001a);
-            --gold-color: #ffd700; --button-bg: linear-gradient(145deg, #0d004d, #1a007d);
-            --correct-color: #28a745; --wrong-color: #dc3545;
-        }
-        body {
-            font-family: 'Poppins', sans-serif; background-color: var(--primary-bg); color: white;
-            margin: 0; padding: 0; height: 100vh; width: 100vw;
-            display: flex; flex-direction: column;
-        }
-        .container {
-            width: 100%; height: 100%; padding: 15px; background: var(--container-bg);
-            box-sizing: border-box; overflow-y: auto; flex-grow: 1;
-        }
+        :root { --primary-bg: #020024; --container-bg: linear-gradient(135deg, #0d004d, #04001a); --gold-color: #ffd700; --button-bg: linear-gradient(145deg, #0d004d, #1a007d); --correct-color: #28a745; --wrong-color: #dc3545; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--primary-bg); color: white; margin: 0; padding: 0; height: 100vh; width: 100vw; display: flex; flex-direction: column; }
+        .container { width: 100%; height: 100%; padding: 15px; background: var(--container-bg); box-sizing: border-box; overflow-y: auto; flex-grow: 1; }
         #start-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; }
         #start-screen h1 { font-size: 2.5em; color: var(--gold-color); text-shadow: 2px 2px 5px #000; text-align: center; }
         .btn { padding: 15px 30px; font-size: 1.5em; font-weight: bold; color: var(--primary-bg); background-color: var(--gold-color); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
@@ -54,18 +43,12 @@
 </head>
 <body>
 
-    <!-- Popunder Ad Code Yahan Paste Kar Diya Gaya Hai -->
-    <script type='text/javascript' src='//pl27565692.revenuecpmgate.com/91/00/91/910091af656a5a6596f89be9299581af.js'></script>
-
-
     <div class="container">
-        <!-- Game Content... -->
         <div id="start-screen">
             <h1>Kaun Banega Crorepati</h1>
             <button id="start-btn" class="btn">Game Shuru Karein</button>
         </div>
         <div id="game-container">
-             <!-- Game Layout... -->
             <div class="main-game">
                 <div class="top-section">
                     <div class="lifelines"><button id="lifeline-50-50" onclick="useLifeline('50-50')">50-50</button></div>
@@ -82,9 +65,7 @@
                 <ul id="money-list">
                     <li>₹ 1,000</li><li>₹ 2,000</li><li>₹ 3,000</li><li>₹ 5,000</li><li>₹ 10,000</li><li>₹ 20,000</li>
                     <li>₹ 40,000</li><li>₹ 80,000</li><li>₹ 1,60,000</li><li>₹ 3,20,000</li><li>₹ 6,40,000</li>
-                    <li>₹ 12,50,000</li><li>₹ 25,00,000</li><li>₹ 50,00,000</li><li>₹ 1 Cr</li><li>₹ 2 Cr</li>
-                    <li>₹ 3 Cr</li><li>₹ 4 Cr</li><li>₹ 5 Cr</li><li>₹ 6 Cr</li>
-                    <li>₹ 7 Cr</li><li>₹ 8 Cr</li><li>₹ 9 Cr</li><li>₹ 10 Cr</li><li>₹ 25 Cr</li>
+                    <li>₹ 12,50,000</li><li>₹ 25,00,000</li><li>₹ 50,00,000</li><li>₹ 1 Cr</li>
                 </ul>
             </div>
         </div>
@@ -99,29 +80,39 @@
     </div>
 
     <script>
-        // JavaScript mein koi badlav ki zaroorat nahi hai.
         const startScreen = document.getElementById('start-screen');
         const gameContainer = document.getElementById('game-container');
-        const startBtn = document.getElementById('start-btn');
         const questionElement = document.getElementById('question');
         const optionButtons = document.querySelectorAll('.option');
         const moneyListItems = document.querySelectorAll('#money-list li');
         const lifeline5050Button = document.getElementById('lifeline-50-50');
         const timerDisplay = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
         const QUESTIONS_PER_GAME = moneyListItems.length;
         let timerInterval = null;
+        
+        // --- ADVERTISEMENT LOGIC ---
+        function showInterstitialAd() {
+            // Aapka Smartlink Yahan Paste Kar Diya Gaya Hai
+            const smartLink = "https://www.revenuecpmgate.com/sepdm1tfn?key=f004f5bc2ace1d0ec7b6b886ff7b2cbd";
+            window.open(smartLink, '_blank');
+        }
+        
         const fullQuestionBank = [
-             { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" }, { question: "Suraj ke sabse nazdeek kaun sa grah (planet) hai?", options: ["Shukra (Venus)", "Budh (Mercury)", "Mangal (Mars)", "Prithvi (Earth)"], answer: "Budh (Mercury)" }, { question: "'Gulabi Sheher' ya 'Pink City' kise kaha jaata hai?", options: ["Jodhpur", "Udaipur", "Jaipur", "Bhopal"], answer: "Jaipur" }, { question: "Aisi kaun si cheez hai jo paani peete hi mar jaati hai?", options: ["Aag", "Pyaas", "Garmi", "Patthar"], answer: "Pyaas" }, { question: "Woh kya hai jo aapke paas jitna zyada hoga, utna hi kam aapko dikhega?", options: ["Paisa", "Roshni", "Andhera", "Gyaan"], answer: "Andhera" }, { question: "Famous dish 'Litti Chokha' mukhya roop se kis Bharatiya rajya se hai?", options: ["Uttar Pradesh", "Bihar", "Rajasthan", "Punjab"], answer: "Bihar" }, { question: "Ramayan mein, Sita haran ke liye sone ka hiran (golden deer) ka roop kisne liya tha?", options: ["Ravana", "Surpanakha", "Maricha", "Vibhishana"], answer: "Maricha" }, { question: "Mahabharat ki ladai Kurukshetra mein kitne dino tak chali thi?", options: ["10 din", "18 din", "25 din", "15 din"], answer: "18 din" }, { question: "Inmein se kaun sa rang, Bharat ke jhande (tricolour) mein nahi hota?", options: ["Kesariya", "Safed", "Hara", "Neela"], answer: "Neela" }, { question: "Telephone ka avishkar kisne kiya tha?", options: ["Thomas Edison", "Graham Bell", "Einstein", "Newton"], answer: "Graham Bell" }, { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" }, { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" }, { question: "Computer ka janak (father of computer) kise kaha jaata hai?", options: ["Bill Gates", "Charles Babbage", "Steve Jobs", "Tim Berners-Lee"], answer: "Charles Babbage" }, { question: "Agar aap ek race mein daud rahe hain aur aapne 2nd position wale ko peeche chhod diya, toh ab aapki position kya hai?", options: ["1st", "3rd", "2nd", "4th"], answer: "2nd" }, { question: "'Sarson ka Saag' aur 'Makki di Roti' kis rajya ka paramparik bhojan hai?", options: ["Haryana", "Gujarat", "Punjab", "Himachal Pradesh"], answer: "Punjab" }, { question: "Onam ka tyohar, khas taur par, kis Bharatiya rajya mein manaya jaata hai?", options: ["Karnataka", "Tamil Nadu", "Kerala", "Andhra Pradesh"], answer: "Kerala" }, { question: "Chhath Puja mein kis devta ki puja ki jaati hai?", options: ["Shiv ji", "Vishnu ji", "Surya Dev", "Indra Dev"], answer: "Surya Dev" }, { question: "Panchtantra ki kahaniyan mool roop se kisne likhi thi?", options: ["Tulsidas", "Kalidas", "Vishnu Sharma", "Valmiki"], answer: "Vishnu Sharma" }, { question: "Chandrama par kadam rakhne wala pehla insaan kaun tha?", options: ["Yuri Gagarin", "Rakesh Sharma", "Neil Armstrong", "Buzz Aldrin"], answer: "Neil Armstrong" }, { question: "Insaan ke shareer mein kitni haddiyan (bones) hoti hain?", options: ["206", "210", "190", "300"], answer: "206" }, { question: "Indradhanush (Rainbow) mein kitne rang hote hain?", options: ["5", "8", "7", "9"], answer: "7" }, { question: "Sabse chhota mahadweep (continent) kaun sa hai?", options: ["Asia", "Africa", "Australia", "Europe"], answer: "Australia" }, { question: "Olympic games kitne saal ke antral par hote hain?", options: ["2 saal", "4 saal", "5 saal", "6 saal"], answer: "4 saal" }, { question: "Leonardo da Vinci ki banayi hui sabse prasidh painting kaun si hai?", options: ["Starry Night", "The Scream", "Mona Lisa", "The Last Supper"], answer: "Mona Lisa" }, { question: "Bharat ka 'missile man' kise kaha jaata hai?", options: ["C.V. Raman", "Vikram Sarabhai", "A.P.J. Abdul Kalam", "Homi Bhabha"], answer: "A.P.J. Abdul Kalam" },
+             { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" }, { question: "Suraj ke sabse nazdeek kaun sa grah (planet) hai?", options: ["Shukra (Venus)", "Budh (Mercury)", "Mangal (Mars)", "Prithvi (Earth)"], answer: "Budh (Mercury)" }, { question: "'Gulabi Sheher' ya 'Pink City' kise kaha jaata hai?", options: ["Jodhpur", "Udaipur", "Jaipur", "Bhopal"], answer: "Jaipur" }, { question: "Aisi kaun si cheez hai jo paani peete hi mar jaati hai?", options: ["Aag", "Pyaas", "Garmi", "Patthar"], answer: "Pyaas" }, { question: "Woh kya hai jo aapke paas jitna zyada hoga, utna hi kam aapko dikhega?", options: ["Paisa", "Roshni", "Andhera", "Gyaan"], answer: "Andhera" }, { question: "Famous dish 'Litti Chokha' mukhya roop se kis Bharatiya rajya se hai?", options: ["Uttar Pradesh", "Bihar", "Rajasthan", "Punjab"], answer: "Bihar" }, { question: "Ramayan mein, Sita haran ke liye sone ka hiran (golden deer) ka roop kisne liya tha?", options: ["Ravana", "Surpanakha", "Maricha", "Vibhishana"], answer: "Maricha" }, { question: "Mahabharat ki ladai Kurukshetra mein kitne dino tak chali thi?", options: ["10 din", "18 din", "25 din", "15 din"], answer: "18 din" }, { question: "Inmein se kaun sa rang, Bharat ke jhande (tricolour) mein nahi hota?", options: ["Kesariya", "Safed", "Hara", "Neela"], answer: "Neela" }, { question: "Telephone ka avishkar kisne kiya tha?", options: ["Thomas Edison", "Graham Bell", "Einstein", "Newton"], answer: "Graham Bell" }, { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" }, { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" }, { question: "Computer ka janak (father of computer) kise kaha jaata hai?", options: ["Bill Gates", "Charles Babbage", "Steve Jobs", "Tim Berners-Lee"], answer: "Charles Babbage" }, { question: "Bharat ka 'missile man' kise kaha jaata hai?", options: ["C.V. Raman", "Vikram Sarabhai", "A.P.J. Abdul Kalam", "Homi Bhabha"], answer: "A.P.J. Abdul Kalam" }, { question: "Leonardo da Vinci ki banayi hui sabse prasidh painting kaun si hai?", options: ["Starry Night", "The Scream", "Mona Lisa", "The Last Supper"], answer: "Mona Lisa" },
         ];
         let gameQuestions = [], currentQuestionIndex = 0, lifeline5050Used = false;
         startBtn.addEventListener('click', startGame);
+
         function shuffleArray(array) { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } }
+        
         function startGame() {
             startScreen.style.display = 'none'; gameContainer.style.display = 'flex';
             shuffleArray(fullQuestionBank); gameQuestions = fullQuestionBank.slice(0, QUESTIONS_PER_GAME);
             currentQuestionIndex = 0; lifeline5050Used = false; lifeline5050Button.classList.remove('used'); lifeline5050Button.disabled = false;
             showQuestion();
         }
+
         function showQuestion() {
             clearInterval(timerInterval);
             optionButtons.forEach(button => { button.disabled = false; button.style.display = 'block'; button.classList.remove('correct', 'wrong'); });
@@ -133,9 +124,11 @@
             } else {
                 questionElement.textContent = "Badhai ho! Aap Crorepati ban gaye!";
                 document.querySelector('.options-container').style.display = 'none'; clearInterval(timerInterval);
+                showInterstitialAd();
                 setTimeout(() => { location.reload(); }, 5000);
             }
         }
+        
         function startTimer() {
             let timeLeft = 20; timerDisplay.textContent = timeLeft; timerDisplay.classList.remove('low-time');
             timerInterval = setInterval(() => {
@@ -144,11 +137,15 @@
                 if (timeLeft < 0) { clearInterval(timerInterval); timeUp(); }
             }, 1000);
         }
+
         function timeUp() {
             optionButtons.forEach(button => button.disabled = true);
+            showInterstitialAd();
             alert("Samay samapt! Game yahin khatm hota hai."); location.reload();
         }
+
         function updateMoneyTree() { moneyListItems.forEach((item, index) => { item.classList.remove('current'); if (index === currentQuestionIndex) { item.classList.add('current'); } }); }
+
         function checkAnswer(selectedButton) {
             clearInterval(timerInterval); optionButtons.forEach(button => button.disabled = true);
             const selectedOptionText = selectedButton.textContent.substring(3);
@@ -159,11 +156,17 @@
             } else {
                 selectedButton.classList.add('wrong');
                 optionButtons.forEach(button => { if (button.textContent.substring(3) === correctAnswer) { button.classList.add('correct'); } });
-                setTimeout(() => { alert("Afsos! Yeh galat jawab hai. Game yahin khatm hota hai."); location.reload(); }, 3000);
+                setTimeout(() => {
+                    showInterstitialAd();
+                    alert("Afsos! Yeh galat jawab hai. Game yahin khatm hota hai.");
+                    location.reload();
+                }, 3000);
             }
         }
+        
         function useLifeline(type) {
             if (type === '50-50' && !lifeline5050Used) {
+                showInterstitialAd();
                 const currentQuestion = gameQuestions[currentQuestionIndex]; const correctAnswer = currentQuestion.answer;
                 const incorrectOptions = currentQuestion.options.filter(opt => opt !== correctAnswer);
                 shuffleArray(incorrectOptions); const optionsToHide = incorrectOptions.slice(0, 2);

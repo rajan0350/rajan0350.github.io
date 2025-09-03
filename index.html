@@ -91,10 +91,46 @@
         const QUESTIONS_PER_GAME = moneyListItems.length;
         let timerInterval = null;
         
-        // Smartlink wala function HATA diya gaya hai.
-        
         const fullQuestionBank = [
-             { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" }, { question: "Suraj ke sabse nazdeek kaun sa grah (planet) hai?", options: ["Shukra (Venus)", "Budh (Mercury)", "Mangal (Mars)", "Prithvi (Earth)"], answer: "Budh (Mercury)" }, { question: "'Gulabi Sheher' ya 'Pink City' kise kaha jaata hai?", options: ["Jodhpur", "Udaipur", "Jaipur", "Bhopal"], answer: "Jaipur" }, { question: "Aisi kaun si cheez hai jo paani peete hi mar jaati hai?", options: ["Aag", "Pyaas", "Garmi", "Patthar"], answer: "Pyaas" }, { question: "Woh kya hai jo aapke paas jitna zyada hoga, utna hi kam aapko dikhega?", options: ["Paisa", "Roshni", "Andhera", "Gyaan"], answer: "Andhera" }, { question: "Famous dish 'Litti Chokha' mukhya roop se kis Bharatiya rajya se hai?", options: ["Uttar Pradesh", "Bihar", "Rajasthan", "Punjab"], answer: "Bihar" }, { question: "Ramayan mein, Sita haran ke liye sone ka hiran (golden deer) ka roop kisne liya tha?", options: ["Ravana", "Surpanakha", "Maricha", "Vibhishana"], answer: "Maricha" }, { question: "Mahabharat ki ladai Kurukshetra mein kitne dino tak chali thi?", options: ["10 din", "18 din", "25 din", "15 din"], answer: "18 din" }, { question: "Inmein se kaun sa rang, Bharat ke jhande (tricolour) mein nahi hota?", options: ["Kesariya", "Safed", "Hara", "Neela"], answer: "Neela" }, { question: "Telephone ka avishkar kisne kiya tha?", options: ["Thomas Edison", "Graham Bell", "Einstein", "Newton"], answer: "Graham Bell" }, { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" }, { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" }, { question: "Computer ka janak (father of computer) kise kaha jaata hai?", options: ["Bill Gates", "Charles Babbage", "Steve Jobs", "Tim Berners-Lee"], answer: "Charles Babbage" }, { question: "Bharat ka 'missile man' kise kaha jaata hai?", options: ["C.V. Raman", "Vikram Sarabhai", "A.P.J. Abdul Kalam", "Homi Bhabha"], answer: "A.P.J. Abdul Kalam" }, { question: "Leonardo da Vinci ki banayi hui sabse prasidh painting kaun si hai?", options: ["Starry Night", "The Scream", "Mona Lisa", "The Last Supper"], answer: "Mona Lisa" },
+            // General Knowledge
+            { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" },
+            { question: "Suraj ke sabse nazdeek kaun sa grah (planet) hai?", options: ["Shukra (Venus)", "Budh (Mercury)", "Mangal (Mars)", "Prithvi (Earth)"], answer: "Budh (Mercury)" },
+            { question: "'Gulabi Sheher' ya 'Pink City' kise kaha jaata hai?", options: ["Jodhpur", "Udaipur", "Jaipur", "Bhopal"], answer: "Jaipur" },
+            { question: "Famous dish 'Litti Chokha' mukhya roop se kis Bharatiya rajya se hai?", options: ["Uttar Pradesh", "Bihar", "Rajasthan", "Punjab"], answer: "Bihar" },
+            { question: "Telephone ka avishkar kisne kiya tha?", options: ["Thomas Edison", "Graham Bell", "Einstein", "Newton"], answer: "Graham Bell" },
+            { question: "Computer ka janak (father of computer) kise kaha jaata hai?", options: ["Bill Gates", "Charles Babbage", "Steve Jobs", "Tim Berners-Lee"], answer: "Charles Babbage" },
+            { question: "Bharat ka 'missile man' kise kaha jaata hai?", options: ["C.V. Raman", "Vikram Sarabhai", "A.P.J. Abdul Kalam", "Homi Bhabha"], answer: "A.P.J. Abdul Kalam" },
+            { question: "Leonardo da Vinci ki banayi hui sabse prasidh painting kaun si hai?", options: ["Starry Night", "The Scream", "Mona Lisa", "The Last Supper"], answer: "Mona Lisa" },
+            { question: "Inmein se kaun sa rang, Bharat ke jhande (tricolour) mein nahi hota?", options: ["Kesariya", "Safed", "Hara", "Neela"], answer: "Neela" },
+            { question: "Insaan ke shareer mein kitni haddiyan (bones) hoti hain?", options: ["206", "210", "190", "300"], answer: "206" },
+
+            // Paheliyan (Riddles)
+            { question: "Aisi kaun si cheez hai jo paani peete hi mar jaati hai?", options: ["Aag", "Pyaas", "Garmi", "Patthar"], answer: "Pyaas" },
+            { question: "Woh kya hai jo aapke paas jitna zyada hoga, utna hi kam aapko dikhega?", options: ["Paisa", "Roshni", "Andhera", "Gyaan"], answer: "Andhera" },
+            { question: "Main hamesha aata hoon, par kabhi nahi pahunchta. Main kya hoon?", options: ["Aaj", "Beeta hua Kal", "Aane wala Kal", "Raat"], answer: "Aane wala Kal" },
+            { question: "Aisi kaun si jagah hai jahan sadak hai par gaadi nahi, jungle hai par ped nahi, aur sheher hai par ghar nahi?", options: ["Tasveer", "Sapna", "Naksha (Map)", "Kitaab"], answer: "Naksha (Map)" },
+            { question: "Ek table par 2 seb hain, aur aapne 1 utha liya. Aapke paas kitne seb hain?", options: ["2", "0", "1", "3"], answer: "1" },
+
+            // Mythology & History
+            { question: "Ramayan mein, Sita haran ke liye sone ka hiran (golden deer) ka roop kisne liya tha?", options: ["Ravana", "Surpanakha", "Maricha", "Vibhishana"], answer: "Maricha" },
+            { question: "Mahabharat ki ladai Kurukshetra mein kitne dino tak chali thi?", options: ["10 din", "18 din", "25 din", "15 din"], answer: "18 din" },
+            { question: "Mughal samrajya ki sthapna kisne ki thi?", options: ["Akbar", "Humayun", "Babur", "Shah Jahan"], answer: "Babur" },
+            { question: "Gautam Buddha ne apna pehla updesh kahan diya tha?", options: ["Bodh Gaya", "Lumbini", "Kushinagar", "Sarnath"], answer: "Sarnath" },
+            { question: "Chanakya kis raja ke mukhya salahkar the?", options: ["Ashoka", "Samudragupta", "Chandragupta Maurya", "Harshavardhana"], answer: "Chandragupta Maurya" },
+
+            // Bollywood & Sports
+            { question: "Film 'Lagaan' mein cricket team ke kaptaan ka naam kya tha?", options: ["Guran", "Lakha", "Bhuvan", "Deva"], answer: "Bhuvan" },
+            { question: "Sachin Tendulkar ne apna 100th antrashtriya shatak kis team ke khilaf banaya tha?", options: ["Pakistan", "Australia", "Sri Lanka", "Bangladesh"], answer: "Bangladesh" },
+            { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" },
+            { question: "Olympic games kitne saal ke antral par hote hain?", options: ["2 saal", "4 saal", "5 saal", "6 saal"], answer: "4 saal" },
+            { question: "'King Khan' ke naam se Bollywood mein kaun sa abhineta mashhoor hai?", options: ["Salman Khan", "Aamir Khan", "Shah Rukh Khan", "Akshay Kumar"], answer: "Shah Rukh Khan" },
+            
+            // Science & More
+            { question: "Hawa mein kaun si gas sabse zyada matra mein hoti hai?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], answer: "Nitrogen" },
+            { question: "Indradhanush (Rainbow) mein kitne rang hote hain?", options: ["5", "8", "7", "9"], answer: "7" },
+            { question: "Google ke CEO kaun hain?", options: ["Satya Nadella", "Jeff Bezos", "Sundar Pichai", "Tim Cook"], answer: "Sundar Pichai" },
+            { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" },
+            { question: "Duniya ka sabse uncha jhad (tree) kaun sa hai?", options: ["Banyan", "Eucalyptus", "Redwood", "Pine"], answer: "Redwood" }
         ];
         let gameQuestions = [], currentQuestionIndex = 0, lifeline5050Used = false;
         startBtn.addEventListener('click', startGame);

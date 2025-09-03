@@ -93,7 +93,6 @@
         
         // --- ADVERTISEMENT LOGIC ---
         function showInterstitialAd() {
-            // Aapka Smartlink Yahan Paste Kar Diya Gaya Hai
             const smartLink = "https://www.revenuecpmgate.com/sepdm1tfn?key=f004f5bc2ace1d0ec7b6b886ff7b2cbd";
             window.open(smartLink, '_blank');
         }
@@ -124,6 +123,7 @@
             } else {
                 questionElement.textContent = "Badhai ho! Aap Crorepati ban gaye!";
                 document.querySelector('.options-container').style.display = 'none'; clearInterval(timerInterval);
+                // GAME JEETNE PAR AD DIKHAO
                 showInterstitialAd();
                 setTimeout(() => { location.reload(); }, 5000);
             }
@@ -140,6 +140,7 @@
 
         function timeUp() {
             optionButtons.forEach(button => button.disabled = true);
+            // SAMAY SAMAPT HONE PAR AD DIKHAO
             showInterstitialAd();
             alert("Samay samapt! Game yahin khatm hota hai."); location.reload();
         }
@@ -157,6 +158,7 @@
                 selectedButton.classList.add('wrong');
                 optionButtons.forEach(button => { if (button.textContent.substring(3) === correctAnswer) { button.classList.add('correct'); } });
                 setTimeout(() => {
+                    // GALAT JAWAB DENE PAR AD DIKHAO
                     showInterstitialAd();
                     alert("Afsos! Yeh galat jawab hai. Game yahin khatm hota hai.");
                     location.reload();
@@ -166,6 +168,7 @@
         
         function useLifeline(type) {
             if (type === '50-50' && !lifeline5050Used) {
+                // 50-50 ISTEMAAL KARNE PAR AD DIKHAO
                 showInterstitialAd();
                 const currentQuestion = gameQuestions[currentQuestionIndex]; const correctAnswer = currentQuestion.answer;
                 const incorrectOptions = currentQuestion.options.filter(opt => opt !== correctAnswer);
@@ -176,4 +179,4 @@
         }
     </script>
 </body>
-</html>
+</html>```

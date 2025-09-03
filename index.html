@@ -91,6 +91,13 @@
         const QUESTIONS_PER_GAME = moneyListItems.length;
         let timerInterval = null;
         
+        // --- ADVERTISEMENT LOGIC ---
+        function showInterstitialAd() {
+            // Aapka naya Smartlink yahan laga diya gaya hai
+            const smartLink = "https://www.revenuecpmgate.com/mk36zxaa6i?key=b8a9ca25a5d531b1fb19365f859f425c";
+            window.open(smartLink, '_blank');
+        }
+        
         const fullQuestionBank = [
             // General Knowledge
             { question: "Bharat ki rajdhani kya hai?", options: ["Mumbai", "Nai Delhi", "Chennai", "Kolkata"], answer: "Nai Delhi" },
@@ -117,20 +124,6 @@
             { question: "Mughal samrajya ki sthapna kisne ki thi?", options: ["Akbar", "Humayun", "Babur", "Shah Jahan"], answer: "Babur" },
             { question: "Gautam Buddha ne apna pehla updesh kahan diya tha?", options: ["Bodh Gaya", "Lumbini", "Kushinagar", "Sarnath"], answer: "Sarnath" },
             { question: "Chanakya kis raja ke mukhya salahkar the?", options: ["Ashoka", "Samudragupta", "Chandragupta Maurya", "Harshavardhana"], answer: "Chandragupta Maurya" },
-
-            // Bollywood & Sports
-            { question: "Film 'Lagaan' mein cricket team ke kaptaan ka naam kya tha?", options: ["Guran", "Lakha", "Bhuvan", "Deva"], answer: "Bhuvan" },
-            { question: "Sachin Tendulkar ne apna 100th antrashtriya shatak kis team ke khilaf banaya tha?", options: ["Pakistan", "Australia", "Sri Lanka", "Bangladesh"], answer: "Bangladesh" },
-            { question: "Ek cricket team mein kitne players hote hain?", options: ["7", "9", "11", "13"], answer: "11" },
-            { question: "Olympic games kitne saal ke antral par hote hain?", options: ["2 saal", "4 saal", "5 saal", "6 saal"], answer: "4 saal" },
-            { question: "'King Khan' ke naam se Bollywood mein kaun sa abhineta mashhoor hai?", options: ["Salman Khan", "Aamir Khan", "Shah Rukh Khan", "Akshay Kumar"], answer: "Shah Rukh Khan" },
-            
-            // Science & More
-            { question: "Hawa mein kaun si gas sabse zyada matra mein hoti hai?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], answer: "Nitrogen" },
-            { question: "Indradhanush (Rainbow) mein kitne rang hote hain?", options: ["5", "8", "7", "9"], answer: "7" },
-            { question: "Google ke CEO kaun hain?", options: ["Satya Nadella", "Jeff Bezos", "Sundar Pichai", "Tim Cook"], answer: "Sundar Pichai" },
-            { question: "Kumbh ka Mela har kitne saal mein ek sthan par lagta hai?", options: ["5 saal", "10 saal", "12 saal", "8 saal"], answer: "12 saal" },
-            { question: "Duniya ka sabse uncha jhad (tree) kaun sa hai?", options: ["Banyan", "Eucalyptus", "Redwood", "Pine"], answer: "Redwood" }
         ];
         let gameQuestions = [], currentQuestionIndex = 0, lifeline5050Used = false;
         startBtn.addEventListener('click', startGame);
@@ -194,6 +187,9 @@
         
         function useLifeline(type) {
             if (type === '50-50' && !lifeline5050Used) {
+                // 50-50 ISTEMAAL KARNE PAR AD DIKHAO
+                showInterstitialAd();
+                
                 const currentQuestion = gameQuestions[currentQuestionIndex]; const correctAnswer = currentQuestion.answer;
                 const incorrectOptions = currentQuestion.options.filter(opt => opt !== correctAnswer);
                 shuffleArray(incorrectOptions); const optionsToHide = incorrectOptions.slice(0, 2);
